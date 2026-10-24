@@ -1,9 +1,10 @@
 import { List } from "./list.js";
 import { State } from "./state.js";
 import { FlowCommand, Reference, ForkFlowCommand, ConditionalFlowCommand } from "./flow_commands.js";
+import { Actor } from "./actor.js";
 
 export class Flow<T extends State> {
-      public static from<T extends State>(actor: string) {
+      public static from<T extends State>(actor: Actor<T>) {
             return new Flow<T>(new Reference(actor));
       }
 
@@ -20,7 +21,7 @@ export class Flow<T extends State> {
             this.stream.append(new ConditionalFlowCommand(condition, actors));
             return this;
       }
-      public pipe(actor: string) {
+      public pipe(actor: Actor<T>) {
             this.stream.append(new Reference(actor));
             return this;
       }

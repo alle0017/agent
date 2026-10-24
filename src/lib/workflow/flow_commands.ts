@@ -1,6 +1,6 @@
 import { State } from "./state.js";
 import { type Flow } from "./flow.js";
-import { System } from "./actor.js";
+import { Actor } from "./actor.js";
 export interface FlowCommand<T extends State> {
       run(state: T): Promise<T>
 }
@@ -21,8 +21,8 @@ export class ConditionalFlowCommand<T extends State, K extends string, Z extends
       }
 }
 export class Reference<T extends State> implements FlowCommand<T> {
-      constructor(private readonly actor: string) {}
+      constructor(private readonly actor: Actor<T>) {}
       public run(state: T): Promise<T> {
-            return System.getActor(this.actor).run(state) as Promise<T>;
+            return this.actor.run(state) as Promise<T>;
       }
 }

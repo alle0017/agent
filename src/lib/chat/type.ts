@@ -18,6 +18,7 @@ export type Definition = ObjectDefinition | BaseDefinition | ArrayDefinition | F
 
 export interface DefBuilder {
       define(): Definition;
+      example(): unknown;
 }
 export class PrimitiveDef implements DefBuilder {
       public static integer(definition: string) {
@@ -38,6 +39,17 @@ export class PrimitiveDef implements DefBuilder {
                   type: this.type,
                   description: this.description
             };
+      }
+      public example(): unknown {
+            switch (this.type) {
+                  case "string": return 'abcd';
+                  case "boolean": return true;
+                  case "object": return {};
+                  case "function": return (() => {})
+                  case "integer": return 0;
+                  case "float": return 0.1
+                  case "array": return [1,2,3]
+            }
       }
 }
 
@@ -66,6 +78,13 @@ export class ObjectDef implements DefBuilder {
                   required: this.required
             };
       }
+      public example(): unknown {
+            const ex: Record<string, unknown> = {};
+            for (const [k,v] of this.properties) {
+                  ex[k] = v.example();
+            }
+            return ex;
+      }
 }
 
 
@@ -78,10 +97,13 @@ export class ArrayDef implements DefBuilder {
                   items: this.items.define()
             }
       }
+      public example(): unknown {
+            return [1,2,3]
+      }
 }
 
 export class FunctionDef implements DefBuilder {
-      constructor(public readonly name: string, protected readonly description: string, protected readonly args: ObjectDef) {}
+      constructor(public readonly name: string, public readonly description: string, public readonly args: ObjectDef) {}
       public define(): Definition {
             return {
                   name: this.name,
@@ -89,5 +111,8 @@ export class FunctionDef implements DefBuilder {
                   description: this.description,
                   parameters: this.args.define()
             }
+      }
+      public example(): unknown {
+            return (() => {})
       }
 }
