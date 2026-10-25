@@ -7,7 +7,6 @@ export abstract class Message {
             public readonly source: Source,
       ) { }
       public abstract isUserGenerated(): boolean;
-      public abstract template(): string;
 }
 
 export class UserMessage extends Message {
@@ -16,9 +15,6 @@ export class UserMessage extends Message {
       }
       public override isUserGenerated(): boolean {
             return true;
-      }
-      public template(): string {
-            return this.message;
       }
 }
 export class ToolCallMessage extends Message {
@@ -30,9 +26,6 @@ export class ToolCallMessage extends Message {
             super('tool_call');
       }
       public override isUserGenerated(): boolean { return false; }
-      public template(): string {
-            return `called ${this.name} with arguments: ${JSON.stringify(this.args)}`;
-      }
 }
 export class ToolResultMessage extends Message {
       public static fromError(id: string, name: string, error: string) {
@@ -46,9 +39,6 @@ export class ToolResultMessage extends Message {
       public override isUserGenerated(): boolean {
             return false;
       }
-      public template(): string {
-            return `tool ${this.name} responded with ${JSON.stringify(this.result)}`;
-      }
 }
 export class AgentMessage extends Message {
       constructor(public readonly message: string, public readonly annotations: {}[]) {
@@ -56,9 +46,6 @@ export class AgentMessage extends Message {
       }
       public override isUserGenerated(): boolean {
             return false;
-      }
-      public template(): string {
-            return this.message;
       }
 }
 export class MessageMapper<T> {

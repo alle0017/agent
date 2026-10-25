@@ -3,6 +3,7 @@ import { Provider } from '../lib/provider.js';
 import { column, Theme } from '../lib/theme.js';
 import { Message } from '../../lib/index.js';
 import { icon, Icons } from './icons.js';
+import { MessageTemplate } from './message_template.js';
 
 const { div, button } = Component;
 
@@ -17,7 +18,7 @@ export function AbstractMessage({ message, color, align, copy = true }: { messag
                   ): ''
             ),
             div({ style: 'text-transform: capitalize; padding: 2%;'},
-                  message.template()
+                  MessageTemplate({ message })
             )
       )
 }
