@@ -1,6 +1,6 @@
 import { List } from "./list.js";
 import { State } from "./state.js";
-import { FlowCommand, Reference, ForkFlowCommand, ConditionalFlowCommand } from "./flow_commands.js";
+import { FlowCommand, Reference, ForkFlowCommand, ConditionalFlowCommand, SubFlowCommand } from "./flow_commands.js";
 import { Actor } from "./actor.js";
 
 export class Flow<T extends State> {
@@ -12,6 +12,10 @@ export class Flow<T extends State> {
 
       constructor(init: FlowCommand<T>) {
             this.stream = new List(init);
+      }
+      public subflow(flow: Flow<T>) {
+            this.stream.append(new SubFlowCommand(flow));
+            return this;
       }
       public fork(...flows: Flow<T>[]) {
             this.stream.append(new ForkFlowCommand(flows));

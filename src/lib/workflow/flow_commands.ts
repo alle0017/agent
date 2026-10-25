@@ -13,6 +13,12 @@ export class ForkFlowCommand<T extends State> implements FlowCommand<T> {
             return states.reduce((p,c) => p.merge(c), state);
       }
 }
+
+export class SubFlowCommand<T extends State> extends ForkFlowCommand<T> {
+      constructor(flow: Flow<T>) {
+            super([flow]);
+      }
+}
 export class ConditionalFlowCommand<T extends State, K extends string, Z extends Record<K, Flow<T>>> implements FlowCommand<T> {
       constructor(private readonly condition: (state: T) => K, private readonly actors: Z) {}
       public async run(state: T): Promise<T> {
