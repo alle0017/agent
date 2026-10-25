@@ -1,13 +1,13 @@
 import { Component } from '../lib/component.js';
 import { Provider } from '../lib/provider.js';
 import { column, Theme } from '../lib/theme.js';
-import { Message } from '../../model/chat/message.js';
+import { Message } from '../../lib/index.js';
 import { icon, Icons } from './icons.js';
 
 const { div, button } = Component;
 
 export function AbstractMessage({ message, color, align, copy = true }: { message: Message, color: string, align: 'start' | 'end', copy?: boolean }) {
-      return div({ style: `align-self: ${align}; width: 70%; min-height: 100px; padding: 10px; background-color: ${color}; border-radius: 7px; ${column()}` },
+      return div({ style: `align-self: ${align}; width: 70%; padding: 5px; min-height: 100px; background-color: ${color}; border-radius: 7px; ${column()}` },
             div({ style: `align-self: end;`},
                   copy ? 
                   button({ class: 'icon-btn-sm' },
@@ -16,7 +16,7 @@ export function AbstractMessage({ message, color, align, copy = true }: { messag
                         )
                   ): ''
             ),
-            div({},
+            div({ style: 'text-transform: capitalize; padding: 2%;'},
                   message.template()
             )
       )

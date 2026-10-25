@@ -1,10 +1,10 @@
 export class Theme {
-      primary = '#0D0D12';
-      accentPrimary = '#d05a42';
+      primary = '#0a0d15';
+      accentPrimary = '#e37d43';
       accentSecondary = '#e3b097'
       //#7e3a3d
       text = '#cecece'
-      background = '#2f2936'
+      background = '#141b2c'
 
       constructor() {
             for (const k of Object.keys(this)) {
