@@ -1,11 +1,15 @@
 import { List } from "./list.js";
 import { State } from "./state.js";
-import { FlowCommand, Reference, ForkFlowCommand, ConditionalFlowCommand, SubFlowCommand } from "./flow_commands.js";
+import { FlowCommand, Reference, ForkFlowCommand, ConditionalFlowCommand, SubFlowCommand, NoneFlow } from "./flow_commands.js";
 import { Actor } from "./actor.js";
 
 export class Flow<T extends State> {
       public static from<T extends State>(actor: Actor<T>) {
             return new Flow<T>(new Reference(actor));
+      }
+
+      public static ofNone<T extends State>() {
+            return new Flow(new NoneFlow<T>());
       }
 
       private readonly stream: List<FlowCommand<T>>;
