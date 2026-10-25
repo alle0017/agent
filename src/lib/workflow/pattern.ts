@@ -12,3 +12,9 @@ export function ReAct<T extends AgentState>(reason: Actor<T>, act: Actor<T>, eva
             }
       )
 }
+
+/**
+ * pattern that implements the `generator evaluator` design pattern.
+ * is an alias of the `ReAct` pattern
+ */
+export const GenEval = ReAct;
