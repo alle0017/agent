@@ -1,6 +1,6 @@
 import { AgentState } from "../workflow.js";
 import { Actor } from "./actor.js";
-import { Flow } from "./flow";
+import { Flow } from "./flow.js";
 
 export function ReAct<T extends AgentState>(reason: Actor<T>, act: Actor<T>, evaluate: (state: T) => boolean) {
       return Flow
