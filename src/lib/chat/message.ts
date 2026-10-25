@@ -1,3 +1,6 @@
+import type { Class } from "../workflow.js";
+import { Optional } from "../workflow/index.js";
+
 export type Source = 'user' | 'agent' | 'tool_call' | 'tool_result';
 export abstract class Message {
       constructor(
@@ -58,3 +61,23 @@ export class AgentMessage extends Message {
             return this.message;
       }
 }
+export class MessageMapper<T> {
+      private readonly type: Class<Message>;
+      private readonly value: Optional<T> = Optional.none();
+      constructor(private readonly message: Message) {
+            this.type = Object.getPrototypeOf(message).constructor;
+      }
+
+      public match<M extends Message>(message: Class<M>, f: (m: M) => T) {
+            if (this.type == message) {
+                  this.value.swapIfEmpty(f(this.message as M));
+            }
+            return this;
+      }
+
+      public get() {
+            return this.value;
+      }
+}
+
+export const map = <T>(message: Message) => new MessageMapper<T>(message);

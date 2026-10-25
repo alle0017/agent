@@ -1,4 +1,4 @@
-class Optional<T> {
+export class Optional<T> {
       public static of<T>(value: T) {
             return new Optional(value);
       }
