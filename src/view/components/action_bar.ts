@@ -4,20 +4,19 @@ import { icon, } from './icons.js';
 const { div, button } = Component;
 
 type ActionBarArgs = {
-      copy: () => void,
-      retry: () => void,
+      size: number
 }
 export type Action = {
       icon: string,
       action: () => void
 }
-export function ActionBar(...actions: Action[]) {
+export function ActionBar({ size = 24 }: Partial<ActionBarArgs>, ...actions: Action[]) {
       return div({ style: `align-self: start; ${row('5px')}` },
             ...actions
             .filter(act => act.action !== undefined)
             .map(act => 
                   button({ class: 'icon-btn-sm', click: () => act.action!() },
-                        icon({ width: 24, height: 24 }, 
+                        icon({ width: size, height: size }, 
                               act.icon
                         )
                   )

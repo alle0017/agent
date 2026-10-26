@@ -25,7 +25,7 @@ export function AbstractMessage({ message, color, align, bordered = true }: Mess
 
 export function HumanMessage({ message }: { message: Message }) {
       return AbstractMessage({ color: Provider.of(Theme).primary, align: 'end', message },
-            ActionBar(
+            ActionBar({},
                   { icon: Icons.Copy, action: () => console.log('copy!') },
                   { icon: Icons.Retry, action: () => console.log('retry!') },
                   { icon: Icons.Edit, action: () => console.log('edit!') }
@@ -35,7 +35,9 @@ export function HumanMessage({ message }: { message: Message }) {
 
 export function AgentMessage({ message }: { message: Message }) {
       return AbstractMessage({ color: Provider.of(Theme).background, align: 'start', message, bordered: false },
-            ActionBar({ icon: Icons.Copy, action: () => console.log('copy!') })
+            ActionBar({}, 
+                  { icon: Icons.Copy, action: () => console.log('copy!') }
+            )
       )
 }
 
