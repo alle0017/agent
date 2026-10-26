@@ -1,15 +1,14 @@
-import { Chat } from "./components/chat.js";
 import { border, Provider, Router, style, Theme } from "./lib/index.js";
 //import { GoogleAgent } from "../model/google/agent.js";
-import { TestAgent, Chat as Model } from "../lib/index.js";
+import { Chat } from "../lib/index.js";
+import { HomePage } from "./pages/home.js";
 
 
 export function App() {
-      const chat = new Model;
-      const agent = new TestAgent
+      const chat = new Chat;
       Provider.set(Theme, new Theme);
       Provider.set(Router, new Router({
-            '/': () => Chat({ chat, agent })
+            '/': () => HomePage({ chat })
       }, '/'))
 
       style(/*css*/`
@@ -52,6 +51,17 @@ export function App() {
             }
             .icon-btn-sm:hover {
                   color: ${Provider.of(Theme).accentPrimary};
+            }
+            .chat-history-item {
+                  width: 80%;
+                  height: 24px;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  padding: 5px;
+            }
+            .chat-history-item:hover {
+                  background-color: ${Provider.of(Theme).secondary};
             }
       `)
 

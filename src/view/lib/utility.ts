@@ -17,7 +17,7 @@ export function react(signals: Reactive<unknown>[], component: () => HTMLElement
 export function style(css: string) {
       document.head.append(Component.style({}, css))
 }
-type BindElement = {
+export type BindElement = {
     value: string;
     element(): undefined | HTMLInputElement;
     binding: (el: HTMLElement) => HTMLElement;
@@ -55,7 +55,7 @@ type PendingArgs<T> = {
       pending: () => HTMLElement
 }
 
-export function Pending<T>({ resolve, reject, pending }: PendingArgs<T>, promise: Promise<T>) {
+export function Pending<T>(promise: Promise<T>, { resolve, reject, pending }: PendingArgs<T>) {
       const signal: Reactive<HTMLElement> = new Reactive(pending());
 
       promise.then((v) => signal.value = resolve(v)).catch((e) => signal.value = reject(e))
