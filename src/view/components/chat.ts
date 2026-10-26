@@ -35,7 +35,8 @@ export function Chat({ chat }: { chat: Model }) {
             await ask(chat);
       }
       document.addEventListener('keypress', e => {
-            if (e.key.toLowerCase() == 'enter' && !e.shiftKey && !e.metaKey && !e.altKey && document.activeElement != message.element()) {
+            if (e.key.toLowerCase() == 'enter' && !e.shiftKey && !e.metaKey && !e.altKey) {
+                  e.preventDefault();
                   send().catch(console.error);
             }
       })
