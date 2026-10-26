@@ -1,5 +1,5 @@
 import { Chat } from "./components/chat.js";
-import { Provider, Router, style, Theme } from "./lib/index.js";
+import { border, Provider, Router, style, Theme } from "./lib/index.js";
 //import { GoogleAgent } from "../model/google/agent.js";
 import { TestAgent, Chat as Model } from "../lib/index.js";
 
@@ -29,7 +29,7 @@ export function App() {
             input {
                   width: calc(100% - 64px - 10px);
                   height: 64px;
-                  border: none;
+                  ${border(Provider.of(Theme).secondary)};
                   padding: 0px;
                   padding-left: 15px;
                   border-radius: 32px;
