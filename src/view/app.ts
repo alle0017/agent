@@ -27,18 +27,19 @@ export function App() {
                   background-color: #0000;
                   color: ${Provider.of(Theme).text};
             }
-            input:focus, input:active {
+            .input:focus, .input:active {
                   outline: none;
             }
-            input {
+            .input {
                   width: calc(100% - 64px - 10px);
-                  height: 64px;
+                  min-height: 64px;
+                  max-height: 200px;
                   ${border(Provider.of(Theme).secondary)};
-                  padding: 0px;
-                  padding-left: 15px;
+                  padding: 15px;
                   border-radius: 14px;
                   font-size: 18px;
                   background-color: ${Provider.of(Theme).primary};
+                  overflow-y: scroll;
             }
             .icon-btn {
                   width: 32px;

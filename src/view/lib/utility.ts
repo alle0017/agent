@@ -17,20 +17,25 @@ export function react(signals: Reactive<unknown>[], component: () => HTMLElement
 export function style(css: string) {
       document.head.append(Component.style({}, css))
 }
-export type BindElement = {
+export type BindElement<T extends HTMLElement> = {
     value: string;
-    element(): undefined | HTMLInputElement;
+    element(): undefined | T;
     binding: (el: HTMLElement) => HTMLElement;
 }
-export function bind(event: 'change' | 'input' = 'change'): BindElement {
-      let element: undefined | HTMLInputElement = undefined;
+export type BindArgs<T extends HTMLElement> = {
+      event: 'change' | 'input',
+      value: (el: T) => string
+}
+export const defaultValue = (el: HTMLElement) => el.innerText;
+export function bind<T extends HTMLElement>({ event = 'change', value = defaultValue  }: Partial<BindArgs<T>>): BindElement<T> {
+      let element: undefined | T = undefined;
       const obj =  {
             value: '',
             element: () => element,
             binding: (el: HTMLElement) => {
-                  element = el as HTMLInputElement;
+                  element = el as T;
                   el.addEventListener(event, (e: Event) => {
-                        obj.value = element!.value;
+                        obj.value = value(element!);
                   });
                   return el;
             }

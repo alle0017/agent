@@ -1,25 +1,18 @@
-import { Component, row, BindElement, column } from '../lib/index.js';
-import { icon, Icons } from './icons.js';
+import { Component, BindElement, column } from '../lib/index.js';
+import { ActionBar } from './action_bar.js';
+import { Icons } from './icons.js';
 
-const { div, input, button } = Component;
+const { div, input, button, textarea } = Component;
 
 
-export function Input({ send, message }: { send: () => void, message: BindElement }) {
+export function Input({ send, message }: { send: () => void, message: BindElement<HTMLElement> }) {
       return div({ style: `align-items: center; ${column()}` },
             message.binding(
-                  input({ placeholder: 'insert a question here...' })
+                  div({ class: 'input', placeholder: 'insert a question here...', contenteditable: 'plaintext-only' })
             ),
-            div({ style: row() },
-                  button({ class: 'icon-btn', click: send },
-                        icon({ width: 32, height: 32 }, 
-                              Icons.Clipboard
-                        )
-                  ),
-                  button({ class: 'icon-btn', click: send },
-                        icon({ width: 32, height: 32 }, 
-                              Icons.Send
-                        )
-                  )
+            ActionBar({ size: 32 },
+                  { action: send, icon: Icons.Clipboard },
+                  { action: send, icon: Icons.Send }
             )
       )
 }

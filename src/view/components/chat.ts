@@ -8,7 +8,7 @@ const { div, } = Component;
 
 
 export function Chat({ chat }: { chat: Model }) {
-      const message = bind('input');
+      const message = bind({ event: 'input' });
       function mount(el: HTMLElement) {
             chat.on('append', e => {
                   const message = AnyMessage({ message: e.message });
@@ -17,16 +17,16 @@ export function Chat({ chat }: { chat: Model }) {
             })
       }
       async function send() {
-            if (!message.value) {
+            if (!message.value.match(/\w/ig)) {
                   return;
             }
             chat.append(new UserMessage(message.value));
             await ask(chat);
-            message.element()!.value = '';
+            message.element()!.innerText = '';
             message.value = '';
       }
       document.addEventListener('keypress', e => {
-            if (e.key.toLowerCase() == 'enter') {
+            if (e.key.toLowerCase() == 'enter' && !e.shiftKey && !e.metaKey && !e.altKey && document.activeElement != message.element()) {
                   send().catch(console.error);
             }
       })
