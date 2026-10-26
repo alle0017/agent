@@ -1,10 +1,12 @@
+export type Child = HTMLElement | string;
+
 type Listener = (this: HTMLElement, ev: Event) => any;
 type HTMLProp<T extends {}> = Partial<{
       [K in keyof T]: K extends keyof HTMLElementEventMap ? Listener : string | boolean
 }>
 export const element = (() => {
       const cache = new Map();
-      return <T extends {}>(name: string, prop: HTMLProp<T>, children: HTMLElement[]) => {
+      return <T extends {}>(name: string, prop: HTMLProp<T>, children: Child[]) => {
 
             let el: HTMLElement;
             if (cache.has(name)) {
@@ -43,7 +45,7 @@ export const element = (() => {
 })();
 
 //@ts-ignore
-export const Component: Record<keyof HTMLElementTagNameMap, <T extends {}>(prop: HTMLProp<T>, ...children: (HTMLElement | string)[]) => HTMLElement> = new Proxy(new Map(), {
+export const Component: Record<keyof HTMLElementTagNameMap, <T extends {}>(prop: HTMLProp<T>, ...children: Child[]) => HTMLElement> = new Proxy(new Map(), {
       get(target, key, receiver) {
             const comp = key.toString();
             if (target.has(comp)) {

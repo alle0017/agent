@@ -44,3 +44,7 @@ export function Hook({ mount }: Lifecycle, child: HTMLElement) {
       mount?.(child)
       return child;
 }
+
+export function If(condition: boolean, component: () => HTMLElement | string) {
+      return condition ? component(): '';
+}
