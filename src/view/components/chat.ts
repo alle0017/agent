@@ -11,7 +11,9 @@ const { div, } = Component;
 export function Chat({ chat }: { chat: Model }) {
       const message = bind({ event: 'input' });
       const container = ref<HTMLElement>();
-      const loader = Loader();
+      const loader = div({ style: 'align-self: start;' },
+            Loader()
+      );
       function mount(el: HTMLElement) {
             chat.on('append', e => {
                   if (loader.isConnected) {
