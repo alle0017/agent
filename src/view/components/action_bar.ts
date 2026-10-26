@@ -1,5 +1,5 @@
 import { Component, row } from '../lib/index.js';
-import { icon, Icons } from './icons.js';
+import { icon, } from './icons.js';
 
 const { div, button } = Component;
 
@@ -7,11 +7,11 @@ type ActionBarArgs = {
       copy: () => void,
       retry: () => void,
 }
-export function ActionBar({ copy, retry }: Partial<ActionBarArgs>) {
-      const actions = [
-            { icon: Icons.Copy, action: copy },
-            { icon: Icons.Retry, action: retry },
-      ]
+export type Action = {
+      icon: string,
+      action: () => void
+}
+export function ActionBar(...actions: Action[]) {
       return div({ style: `align-self: start; ${row('5px')}` },
             ...actions
             .filter(act => act.action !== undefined)

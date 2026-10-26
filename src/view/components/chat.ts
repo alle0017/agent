@@ -4,7 +4,7 @@ import { UserMessage, Chat as Model } from '../../lib/index.js';
 import { ask } from '../actors.js';
 import { Input } from './input.js';
 
-const { div, input, button } = Component;
+const { div, } = Component;
 
 
 export function Chat({ chat }: { chat: Model }) {
@@ -28,9 +28,11 @@ export function Chat({ chat }: { chat: Model }) {
                   send().catch(console.error);
             }
       })
-      return div({ style:  `width: 800px; ${column()}` },
-            Hook({ mount },
-                  div({ style: `width: 800px; height: 600px; overflow-y: scroll; ${column()}` },)
+      return div({ style:  `width: 60vw; margin-top: 50px; ${column()}` },
+            div({ style: `width: 60vw; height: 70vh; overflow-y: scroll;` },
+                  Hook({ mount },
+                        div({ style: `width: 60vw; ${column()}` })
+                  ),
             ),
             Input({ send, message })
       )

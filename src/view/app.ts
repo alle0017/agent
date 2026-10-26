@@ -13,12 +13,17 @@ export function App() {
 
       style(/*css*/`
             body {
+                  padding: 0px;
+                  margin: 0px;
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   background-color: ${Provider.of(Theme).background};
+                  overflow: hidden;
             }
             * {
+                  font-size: 22px;
+                  font-family: "Gill Sans", sans-serif;
                   background-color: #0000;
                   color: ${Provider.of(Theme).text};
             }
@@ -31,13 +36,13 @@ export function App() {
                   ${border(Provider.of(Theme).secondary)};
                   padding: 0px;
                   padding-left: 15px;
-                  border-radius: 32px;
+                  border-radius: 14px;
                   font-size: 18px;
                   background-color: ${Provider.of(Theme).primary};
             }
             .icon-btn {
-                  width: 64px;
-                  height: 64px;
+                  width: 32px;
+                  height: 32px;
             }
             .icon-btn, .icon-btn-sm {
                   display: flex;
@@ -46,11 +51,8 @@ export function App() {
                   border-radius: 7px;
                   border: none;
             }
-            .icon-btn:hover {
+            .icon-btn:hover, .icon-btn-sm:hover  {
                   background-color: ${Provider.of(Theme).primary};
-            }
-            .icon-btn-sm:hover {
-                  color: ${Provider.of(Theme).accentPrimary};
             }
             .chat-history-item {
                   width: 80%;
@@ -59,6 +61,7 @@ export function App() {
                   flex-direction: row;
                   align-items: center;
                   padding: 5px;
+                  border-radius: 7px;
             }
             .chat-history-item:hover {
                   background-color: ${Provider.of(Theme).secondary};
