@@ -11,7 +11,9 @@ export function Chat({ chat }: { chat: Model }) {
       const message = bind('input');
       function mount(el: HTMLElement) {
             chat.on('append', e => {
-                  el.append(AnyMessage({ message: e.message }));
+                  const message = AnyMessage({ message: e.message });
+                  el.append(message);
+                  message.scrollIntoView({ block: 'end' });
             })
       }
       async function send() {
