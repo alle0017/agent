@@ -14,9 +14,7 @@ export function react(signals: Reactive<unknown>[], component: () => HTMLElement
       return el;
 }
 
-export function style(css: string) {
-      document.head.append(Component.style({}, css))
-}
+
 export type BindElement<T extends HTMLElement> = {
     value: string;
     element(): undefined | T;
@@ -68,3 +66,18 @@ export function Pending<T>(promise: Promise<T>, { resolve, reject, pending }: Pe
             () => signal.value
       )
 }
+
+export const style = (() => {
+      const map: Map<string, HTMLElement> = new Map;
+      return (css: string) => {
+            css = css.replaceAll(' ', '').replaceAll(/\n/ig, '');
+
+            if (map.has(css)) {
+                  return;
+            }
+
+            const sheet = Component.style({}, css);
+            map.set(css, sheet);
+            document.head.append(sheet);
+      }
+})()

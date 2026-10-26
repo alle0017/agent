@@ -21,9 +21,9 @@ export function Chat({ chat }: { chat: Model }) {
                   return;
             }
             chat.append(new UserMessage(message.value));
-            await ask(chat);
             message.element()!.innerText = '';
             message.value = '';
+            await ask(chat);
       }
       document.addEventListener('keypress', e => {
             if (e.key.toLowerCase() == 'enter' && !e.shiftKey && !e.metaKey && !e.altKey && document.activeElement != message.element()) {

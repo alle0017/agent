@@ -1,4 +1,4 @@
-import { border, Provider, Router, style, Theme } from "./lib/index.js";
+import { Provider, Router, style, Theme } from "./lib/index.js";
 //import { GoogleAgent } from "../model/google/agent.js";
 import { Chat } from "../lib/index.js";
 import { HomePage } from "./pages/home.js";
@@ -27,17 +27,6 @@ export function App() {
                   background-color: #0000;
                   color: ${Provider.of(Theme).text};
             }
-            .input:focus, .input:active {
-                  outline: none;
-            }
-            .input {
-                  width: 100%; 
-                  min-height: 32px; 
-                  max-height: 200px;
-                  padding: 15px;  
-                  overflow-y: scroll;
-                  padding-top: 5px;
-            }
             .icon-btn {
                   width: 32px;
                   height: 32px;
@@ -51,18 +40,6 @@ export function App() {
             }
             .icon-btn:hover, .icon-btn-sm:hover  {
                   background-color: ${Provider.of(Theme).primary};
-            }
-            .chat-history-item {
-                  width: 80%;
-                  height: 24px;
-                  display: flex;
-                  flex-direction: row;
-                  align-items: center;
-                  padding: 5px;
-                  border-radius: 7px;
-            }
-            .chat-history-item:hover {
-                  background-color: ${Provider.of(Theme).secondary};
             }
       `)
 
