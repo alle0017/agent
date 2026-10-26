@@ -48,3 +48,18 @@ export function Hook({ mount }: Lifecycle, child: HTMLElement) {
 export function If(condition: boolean, component: () => HTMLElement | string) {
       return condition ? component(): '';
 }
+
+type PendingArgs<T> = {
+      resolve: (value: T) => HTMLElement
+      reject: (value: Error) => HTMLElement
+      pending: () => HTMLElement
+}
+
+export function Pending<T>({ resolve, reject, pending }: PendingArgs<T>, promise: Promise<T>) {
+      const signal: Reactive<HTMLElement> = new Reactive(pending());
+
+      promise.then((v) => signal.value = resolve(v)).catch((e) => signal.value = reject(e))
+      return react([signal],
+            () => signal.value
+      )
+}
