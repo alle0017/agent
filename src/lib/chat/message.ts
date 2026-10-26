@@ -16,6 +16,9 @@ export class UserMessage extends Message {
       public override isUserGenerated(): boolean {
             return true;
       }
+      public toString() {
+            return this.message;
+      }
 }
 export class ToolCallMessage extends Message {
       constructor(
@@ -46,6 +49,9 @@ export class AgentMessage extends Message {
       }
       public override isUserGenerated(): boolean {
             return false;
+      }
+      public toString() {
+            return this.message;
       }
 }
 export class MessageMapper<T> {

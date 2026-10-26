@@ -1,8 +1,9 @@
 import { border, column, Theme, Provider, Component, type Child } from '../lib/index.js';
-import { Message, } from '../../lib/index.js';
+import { Message, UserMessage, } from '../../lib/index.js';
 import { MessageTemplate } from './message_template.js';
 import { ActionBar } from './action_bar.js';
 import { Icons } from './icons.js';
+import { copyToClipboard } from '../../model/services/clipboard.js';
 
 const { div } = Component;
 
@@ -26,7 +27,7 @@ export function AbstractMessage({ message, color, align, bordered = true }: Mess
 export function HumanMessage({ message }: { message: Message }) {
       return AbstractMessage({ color: Provider.of(Theme).primary, align: 'end', message },
             ActionBar({},
-                  { icon: Icons.Copy, action: () => console.log('copy!') },
+                  { icon: Icons.Copy, action: () => copyToClipboard(message.toString()) },
                   { icon: Icons.Retry, action: () => console.log('retry!') },
                   { icon: Icons.Edit, action: () => console.log('edit!') }
             )
@@ -36,7 +37,7 @@ export function HumanMessage({ message }: { message: Message }) {
 export function AgentMessage({ message }: { message: Message }) {
       return AbstractMessage({ color: Provider.of(Theme).background, align: 'start', message, bordered: false },
             ActionBar({}, 
-                  { icon: Icons.Copy, action: () => console.log('copy!') }
+                  { icon: Icons.Copy, action: () => copyToClipboard(message.toString()) }
             )
       )
 }
