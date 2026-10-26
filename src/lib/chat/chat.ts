@@ -36,6 +36,18 @@ export class Chat {
             return this;
       }
 
+      public fork(to: Message) {
+            const chat = new Chat(this.id, this.config);
+
+            for (const message of this.messages) {
+                  chat.append(message);
+                  if (message == to) {
+                        return chat;
+                  }
+            }
+            return chat;
+      }
+
       public on(event: ChatEventTypes, listener: (e: ChatEvent) => void) {
             this.dispatcher.on(event, listener);
             return this;
