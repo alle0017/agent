@@ -1,5 +1,5 @@
 import { Datasource, EntityMetadata } from "./datasource.js"
-export type Class<T extends Entity = Entity> = new() => T
+export type Class<T extends Entity = Entity> = new(...args: any[]) => T
 
 export class Entity {
       public readonly _auto = crypto.randomUUID();
@@ -27,6 +27,15 @@ export abstract class Repository<T extends Entity> {
                   const trans = db.transaction([this.table], "readonly");
                   const store = trans.objectStore(this.table);
                   const request: IDBRequest<T[]> = store.getAll();
+                  return request;
+            })
+      }
+
+      public keys() {
+            return this.datasource.execute(db => {
+                  const trans = db.transaction([this.table], "readonly");
+                  const store = trans.objectStore(this.table);
+                  const request: IDBRequest<IDBValidKey[]> = store.getAllKeys();
                   return request;
             })
       }
