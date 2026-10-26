@@ -31,15 +31,12 @@ export function App() {
                   outline: none;
             }
             .input {
-                  width: calc(100% - 64px - 10px);
-                  min-height: 64px;
+                  width: 100%; 
+                  min-height: 32px; 
                   max-height: 200px;
-                  ${border(Provider.of(Theme).secondary)};
-                  padding: 15px;
-                  border-radius: 14px;
-                  font-size: 18px;
-                  background-color: ${Provider.of(Theme).primary};
+                  padding: 15px;  
                   overflow-y: scroll;
+                  padding-top: 5px;
             }
             .icon-btn {
                   width: 32px;
