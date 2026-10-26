@@ -40,11 +40,19 @@ export function bind<T extends HTMLElement>({ event = 'change', value = defaultV
       }
       return obj;
 }
-type Lifecycle = {
-      mount?: (el: HTMLElement) => void;
+type Lifecycle<T extends HTMLElement = HTMLElement> = {
+      mount?: (el: T) => void;
+      ref?: Ref<T>
 }
-export function Hook({ mount }: Lifecycle, child: HTMLElement) {
+export type Ref<T> = {
+      value: T | undefined
+}
+export const ref = <T>(): Ref<T> => ({ value: undefined })
+export function Hook({ mount, ref }: Lifecycle, child: HTMLElement) {
       mount?.(child)
+      if (ref) {
+            ref.value = child;
+      }
       return child;
 }
 
@@ -70,7 +78,7 @@ export function Pending<T>(promise: Promise<T>, { resolve, reject, pending }: Pe
 export const style = (() => {
       const map: Map<string, HTMLElement> = new Map;
       return (css: string) => {
-            css = css.replaceAll(' ', '').replaceAll(/\n/ig, '');
+            css = css.replace(/\s+/g, ' ').trim();
 
             if (map.has(css)) {
                   return;
