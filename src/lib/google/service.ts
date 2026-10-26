@@ -7,6 +7,14 @@ export type GoogleAgentResponse = |
       annotations: string[]
 } 
 | {
+      content: Array<{
+            type: 'text' | 'model_output',
+            text: string,
+            annotations: string[]
+      }>,
+      type: "model_output"
+}
+| {
       type: 'function_call'
       annotations: string[]
       id: string,

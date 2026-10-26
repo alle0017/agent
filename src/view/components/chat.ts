@@ -1,7 +1,7 @@
 import { bind, column, Component, Hook, } from '../lib/index.js';
 import { AnyMessage } from './message.js';
 import { UserMessage, Chat as Model } from '../../lib/index.js';
-import { ask } from '../actors.js';
+import { ask } from '../../model/actors/oracle.js';
 import { Input } from './input.js';
 
 const { div, } = Component;
