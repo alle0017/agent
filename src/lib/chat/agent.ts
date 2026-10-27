@@ -7,6 +7,7 @@ export type AgentArgs = {
       chat: Chat,
       structured?: ObjectDef,
       tools?: Tool[]
+      systemPrompt?: string
 }
 export interface Agent {
       ask(args: AgentArgs): Promise<Message[]>;

@@ -25,6 +25,7 @@ export type GoogleInput = {
       response_mime_type?: 'application/json',
       response_format?: Definition
       generation_config?: Partial<GoogleGenerationConfig>
+      system_instruction?: string
 }
 
 export class GoogleAgentService {

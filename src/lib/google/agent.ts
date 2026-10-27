@@ -17,11 +17,12 @@ export class GoogleAgent implements Agent {
             this.service = new GoogleAgentService(key);
       }
 
-      private buildBody(chat: Chat, declarations: { name: string }[], structured: ObjectDef | undefined): GoogleInput {
+      private buildBody(chat: Chat, declarations: { name: string }[], structured: ObjectDef | undefined, systemPrompt: string): GoogleInput {
             const body: GoogleInput = {
                   model: this.model,
                   input: chat.messages.map(m => GoogleAiMessage.fromMessage(m).toJSON()),
                   store: false,
+                  system_instruction: systemPrompt
             };
             if (declarations.length) {
                   body.tools = declarations;
@@ -35,9 +36,9 @@ export class GoogleAgent implements Agent {
             }
             return body;
       }
-      public async ask({ chat, structured, tools }: AgentArgs): Promise<Message[]> {
+      public async ask({ chat, structured, tools, systemPrompt = '' }: AgentArgs): Promise<Message[]> {
             const declarations = tools?.map(t => t.definition.define() as { name: string }) ?? [];
-            const body: GoogleInput = this.buildBody(chat, declarations, structured);
+            const body: GoogleInput = this.buildBody(chat, declarations, structured, systemPrompt);
             const outputs = await this.service.fetch(body);
             return outputs.map(deserialize);
       }
