@@ -28,11 +28,11 @@ export class Optional<T> {
             }
             return this.value as T;
       }
-      public orElse(value: T) {
+      public orElse(value: T): T {
             if (this.isEmpty()) {
                   return value;
             }
-            return this.value
+            return this.value!;
       }
 }
 class Node<T> {

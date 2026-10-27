@@ -27,8 +27,8 @@ export class ConditionalFlowCommand<T extends State, K extends string, Z extends
 }
 export class Reference<T extends State> implements FlowCommand<T> {
       constructor(private readonly actor: Actor<T>) {}
-      public run(state: T): Promise<T> {
-            return this.actor.run(state) as Promise<T>;
+      public run(state: T) {
+            return this.actor(state);
       }
 }
 export class NoneFlow<T extends State> implements FlowCommand<T> {

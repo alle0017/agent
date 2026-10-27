@@ -1,5 +1,5 @@
 import { border, column, Theme, Provider, Component, type Child } from '../lib/index.js';
-import { Message, UserMessage, } from '../../lib/index.js';
+import { Message, } from '../../lib/index.js';
 import { MessageTemplate } from './message_template.js';
 import { ActionBar } from './action_bar.js';
 import { Icons } from './icons.js';

@@ -1,9 +1,6 @@
-import { Agent, AgentArgs } from "./chat/agent.js";
 import { Chat } from "./chat/chat.js";
-import { Message, ToolCallMessage, ToolResultMessage } from "./chat/message.js";
+import { map, Message, ToolCallMessage, ToolResultMessage } from "./chat/message.js";
 import { FunctionalTool, Tool } from "./chat/tool.js";
-import { FunctionDef, } from "./chat/type.js";
-import { ActorRef } from "./workflow/actor.js";
 import { State } from "./workflow/state.js";
 export type Class<T extends {} = {}> = new(...args: any[]) => T
 
@@ -14,62 +11,9 @@ export class AgentState extends State {
 }
 type Consumer<T extends AgentState, M extends Message = Message> = (message: M, state: T) => Promise<T> | T
 
-export abstract class AgentActor<T extends AgentState> extends ActorRef<T> {
-      private readonly consumers: Map<Class<Message>, Set<Consumer<T>>> = new Map;
-      protected abstract agent(): Agent;
-      protected abstract prompt(state: T): AgentArgs;
-
-      public async run(state: T): Promise<T> {
-            const agent = this.agent();
-            const messages = await agent.ask(this.prompt(state));
-            for (const message of messages) {
-                  const type = Object.getPrototypeOf(message).constructor;
-                  const consumers = this.consumers.get(type);
-                  if (!consumers) {
-                        continue;
-                  }
-                  for (const consumer of consumers) {
-                        const promise = consumer(message, state);
-                        if (promise instanceof Promise) {
-                              state = await promise
-                        } else {
-                              state = promise;
-                        }
-                  }
-            }
-            return state;
-      }
-
-      public addConsumer<M extends Message>(message: Class<M>, consumer: Consumer<T, M>) {
-            this.consumers.getOrInsertComputed(message, () => new Set).add(consumer as Consumer<T>);
-            return this;
-      }
-}
-
-export function consume<M extends Message>(message: Class<M>) {
-      return <T extends AgentState>(method: Consumer<T, M>, ctx: ClassMethodDecoratorContext<AgentActor<T>>) => {
-            ctx.addInitializer(function (this) {
-                  this.addConsumer(message, (m, s) => method.call(this, m, s));
-            })
-      }
-}
-export function tool(def: FunctionDef) {
-      return <T extends AgentState>(method: Function, ctx: ClassMethodDecoratorContext<ToolActor<T>>) => {
-            ctx.addInitializer(function (this) {
-                  this.use(
-                        new FunctionalTool(
-                              (...args: any[]) => method.call(this, ...args),
-                              def
-                        )
-                  );
-            })
-      }
-}
-
-export abstract class ToolActor<T extends AgentState> extends AgentActor<T> {
+export class ToolManager<T extends AgentState> {
       private readonly tools: Map<string, Tool> = new Map;
 
-      @consume(ToolCallMessage)
       private async execute(message: ToolCallMessage, state: T) {
             const tool = this.tools.get(message.name);
 
@@ -88,11 +32,22 @@ export abstract class ToolActor<T extends AgentState> extends AgentActor<T> {
             }
             return state
       }
-      protected usedTools() {
+      private usedTools() {
             return [...this.tools.values()];
+      }
+      public async run(messages: Message[], state: T) {
+            for (const message of messages) {
+                  state = await map<Promise<T> | T>(message)
+                        .match(ToolCallMessage, m => this.execute(m, state))
+                        .get()
+                        .orElse(state);
+            }
       }
       public use(tool: Tool) {
             this.tools.set(tool.definition.name, tool);
             return this;
       }
+}
+export function withTools<T extends AgentState>() {
+      return new ToolManager();
 }
