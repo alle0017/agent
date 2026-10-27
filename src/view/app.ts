@@ -1,14 +1,12 @@
 import { Provider, Router, style, Theme } from "./lib/index.js";
 //import { GoogleAgent } from "../model/google/agent.js";
-import { Chat } from "../lib/index.js";
 import { HomePage } from "./pages/home.js";
 
 
 export function App() {
-      const chat = new Chat;
       Provider.set(Theme, new Theme);
       Provider.set(Router, new Router({
-            '/': () => HomePage({ chat })
+            '/': () => HomePage()
       }, '/'))
 
       style(/*css*/`

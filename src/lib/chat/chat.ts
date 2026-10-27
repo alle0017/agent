@@ -1,4 +1,6 @@
 import { Event, EventDispatcher } from "../event.js";
+import { Class } from "../workflow.js";
+import { Optional } from "../workflow/list.js";
 import { Message, } from "./message.js";
 
 type ChatEventTypes = 'append' | 'beforeappend';
@@ -25,6 +27,14 @@ export class Chat {
       ) { 
       }
 
+      public firstOf<T extends Message>(type: Class<T>): Optional<T> {
+            for (const message of this.messages) {
+                  if (Object.getPrototypeOf(message).constructor == type) {
+                        return Optional.of(message as T);
+                  }
+            }
+            return Optional.none();
+      }
       public latest() {
             return this.messages.at(-1);
       }

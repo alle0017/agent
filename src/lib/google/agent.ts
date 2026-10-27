@@ -1,20 +1,12 @@
-import { AgentMessage, Message, ToolCallMessage, } from "../chat/message.js";
+import { Message, } from "../chat/message.js";
 import { Chat } from "../chat/chat.js";
 import { ObjectDef } from "../chat/type.js";
 import { Agent, AgentArgs } from "../chat/agent.js";
-import { GoogleAgentService, GoogleAgentResponse, GoogleInput } from "./service.js";
-import { GoogleAiMessage } from "./messages.js";
+import { GoogleAgentService, GoogleInput } from "./service.js";
+import { deserialize, GoogleAiMessage } from "./messages.js";
 
 
 
-function fromOutput(message: GoogleAgentResponse) {
-      switch (message.type) {
-            case "text": return new AgentMessage(message.text, message.annotations)
-            case "model_output": return new AgentMessage(message.content.filter(m => m.type == 'text').map(p => p.text).reduce((p,c) => p + c, ''), [])
-            case "function_call": return new ToolCallMessage(message.id, message.name, message.arguments ?? {})
-            default: return new AgentMessage('thinking...', []);
-      }
-}
 
 export class GoogleAgent implements Agent {
       private static readonly MAX_STEPS = 10;
@@ -47,6 +39,6 @@ export class GoogleAgent implements Agent {
             const declarations = tools?.map(t => t.definition.define() as { name: string }) ?? [];
             const body: GoogleInput = this.buildBody(chat, declarations, structured);
             const outputs = await this.service.fetch(body);
-            return outputs.map(fromOutput);
+            return outputs.map(deserialize);
       }
 }

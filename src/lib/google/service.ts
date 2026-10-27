@@ -1,26 +1,7 @@
 import { Definition } from "../chat/type.js"
+import { GoogleSerializable } from "./messages.js"
 
-export type GoogleAgentResponse = |
-{
-      type: 'text',
-      text: string,
-      annotations: string[]
-} 
-| {
-      content: Array<{
-            type: 'text' | 'model_output',
-            text: string,
-            annotations: string[]
-      }>,
-      type: "model_output"
-}
-| {
-      type: 'function_call'
-      annotations: string[]
-      id: string,
-      name: string,
-      arguments: {}
-}
+
 export type GoogleUsageReport = {
       total_tokens: number,
       total_input_tokens: number,
@@ -30,7 +11,7 @@ export type GoogleUsageReport = {
       total_thought_tokens: number
 }
 export type GoogleOutput = {
-      steps?: GoogleAgentResponse[]
+      steps?: GoogleSerializable[]
       usage: GoogleUsageReport
 }
 export type GoogleGenerationConfig = {
